@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор на Фактури</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Генератор на Фактури</h1>
+        
+        <div class="input-form">
+            <h2>Въведете данни</h2>
+            <div class="form-group">
+                <label for="invoiceNumber">Номер на фактура:</label>
+                <input type="text" id="invoiceNumber" placeholder="Ф-001">
+            </div>
+            <div class="form-group">
+                <label for="date">Дата:</label>
+                <input type="date" id="date">
+            </div>
+            <div class="form-group">
+                <label for="providerName">Доставчик:</label>
+                <input type="text" id="providerName" placeholder="Име на доставчика">
+            </div>
+            <div class="form-group">
+                <label for="clientName">Клиент:</label>
+                <input type="text" id="clientName" placeholder="Име на клиента">
+            </div>
+            
+            <h3>Артикули</h3>
+            <div id="items">
+                <div class="item-row">
+                    <input type="text" placeholder="Описание" class="item-desc">
+                    <input type="number" placeholder="Количество" class="item-qty">
+                    <input type="number" placeholder="Цена" class="item-price">
+                    <button class="remove-item">Премахни</button>
+                </div>
+            </div>
+            <button id="addItem">Добави артикул</button>
+            
+            <button id="generateInvoice">Генерирай Фактура</button>
+        </div>
+        
+        <div class="invoice-preview" id="invoicePreview">
+            <h2>Фактура</h2>
+            <div class="invoice-header">
+                <div class="invoice-number">Фактура №: <span id="invNum">Ф-001</span></div>
+                <div class="invoice-date">Дата: <span id="invDate">01.01.2023</span></div>
+            </div>
+            <div class="parties">
+                <div class="provider">
+                    <h3>Доставчик:</h3>
+                    <p id="invProvider">Доставчик ООД</p>
+                </div>
+                <div class="client">
+                    <h3>Клиент:</h3>
+                    <p id="invClient">Клиент ЕООД</p>
+                </div>
+            </div>
+            <table class="invoice-items">
+                <thead>
+                    <tr>
+                        <th>Описание</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                        <th>Сума</th>
+                    </tr>
+                </thead>
+                <tbody id="invItems">
+                    <!-- Тук ще се добавят артикулите -->
+                </tbody>
+            </table>
+            <div class="invoice-total">
+                <strong>Общо: <span id="invTotal">0.00</span> лв.</strong>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
