@@ -1,135 +1,22 @@
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 20px;
-    color: #333;
+@media print {
+    .no-print {
+        display: none;
+    }
 }
-
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.input-form {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.form-group input {
+.item-row input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ddd;
+    margin-bottom: 8px;
+    border: 1px solid #e5e7eb;
     border-radius: 4px;
 }
-
 .item-row {
     display: flex;
     gap: 10px;
     margin-bottom: 10px;
 }
-
-.item-row input {
-    flex: 1;
-    padding: 8px;
-}
-
-button {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    background: #45a049;
-}
-
-.remove-item {
-    background: #f44336;
-}
-
-.remove-item:hover {
-    background: #d32f2f;
-}
-
-.invoice-preview {
-    border: 1px solid #ddd;
-    padding: 20px;
-    background: white;
-    margin-top: 20px;
-}
-
-.invoice-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.parties {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.provider, .client {
-    width: 48%;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-.invoice-total {
-    text-align: right;
-    font-size: 1.2em;
-}
-/* Добави това в styles.css */
 #invoicePreview {
-    background: white !important;
-    color: black !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-}
-
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    #invoicePreview, #invoicePreview * {
-        visibility: visible;
-    }
-    #invoicePreview {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
+    background: white;
+    padding: 20px;
+    margin-top: 30px;
 }

@@ -3,82 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор на Фактури</title>
+    <title>Генератор на фактури</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="icon" href="data:,">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>Генератор на Фактури</h1>
-        
-        <div class="input-form">
-            <h2>Въведете данни</h2>
-            <div class="form-group">
-                <label for="invoiceNumber">Номер на фактура:</label>
-                <input type="text" id="invoiceNumber" placeholder="Ф-001">
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6 max-w-4xl">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Генератор на фактури</h1>
+
+            <!-- Формуляри -->
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Информация за доставчика</h2>
+                <label class="block mb-2">Доставчик: <input type="text" id="supplierName" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">Адрес: <input type="text" id="supplierAddress" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">ЕИК: <input type="text" id="supplierId" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">МОЛ: <input type="text" id="supplierMol" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">Телефон: <input type="text" id="supplierPhone" class="w-full p-2 border rounded"></label>
             </div>
-            <div class="form-group">
-                <label for="date">Дата:</label>
-                <input type="date" id="date">
+
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Информация за получателя</h2>
+                <label class="block mb-2">Получател: <input type="text" id="recipientName" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">Адрес: <input type="text" id="recipientAddress" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">ЕИК: <input type="text" id="recipientId" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">МОЛ: <input type="text" id="recipientMol" class="w-full p-2 border rounded"></label>
             </div>
-            <div class="form-group">
-                <label for="providerName">Доставчик:</label>
-                <input type="text" id="providerName" placeholder="Име на доставчика">
+
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Информация за фактурата</h2>
+                <label class="block mb-2">Номер на фактура: <input type="text" id="invoiceNumber" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">Дата: <input type="date" id="invoiceDate" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">Дата на данъчно събитие: <input type="date" id="taxEventDate" class="w-full p-2 border rounded"></label>
             </div>
-            <div class="form-group">
-                <label for="clientName">Клиент:</label>
-                <input type="text" id="clientName" placeholder="Име на клиента">
-            </div>
-            
-            <h3>Артикули</h3>
-            <div id="items">
-                <div class="item-row">
-                    <input type="text" placeholder="Описание" class="item-desc">
-                    <input type="number" placeholder="Количество" class="item-qty">
-                    <input type="number" placeholder="Цена" class="item-price">
-                    <button class="remove-item">Премахни</button>
+
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Стоки</h2>
+                <div id="items">
+                    <div class="item-row">
+                        <input type="text" class="item-num" placeholder="№" value="1">
+                        <input type="text" class="item-name" placeholder="Наименование">
+                        <input type="number" class="item-quantity" placeholder="Количество" step="0.01">
+                        <input type="number" class="item-price" placeholder="Ед. Цена" step="0.01">
+                    </div>
                 </div>
+                <button onclick="addItem()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Добави стока</button>
             </div>
-            <button id="addItem">Добави артикул</button>
-            
-            <button id="generateInvoice">Генерирай Фактура</button>
-        </div>
-        
-        <div class="invoice-preview" id="invoicePreview">
-            <h2>Фактура</h2>
-            <div class="invoice-header">
-                <div class="invoice-number">Фактура №: <span id="invNum">Ф-001</span></div>
-                <div class="invoice-date">Дата: <span id="invDate">01.01.2023</span></div>
+
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Платежна информация</h2>
+                <label class="block mb-2">IBAN: <input type="text" id="iban" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">Банка: <input type="text" id="bank" class="w-full p-2 border rounded"></label>
+                <label class="block mb-2">БИК: <input type="text" id="bankCode" class="w-full p-2 border rounded"></label>
             </div>
-            <div class="parties">
-                <div class="provider">
-                    <h3>Доставчик:</h3>
-                    <p id="invProvider">Доставчик ООД</p>
+
+            <!-- Бутон за генериране -->
+            <div class="text-center no-print">
+                <button onclick="generateInvoice()" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+                    Генерирай фактура
+                </button>
+            </div>
+
+            <!-- Преглед на фактурата -->
+            <div id="invoicePreview" class="hidden">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800">ФАКТУРА</h1>
+                        <p class="text-gray-600" id="previewInvoiceNumber"></p>
+                        <p class="text-gray-600" id="previewInvoiceDate"></p>
+                        <p class="text-gray-600" id="previewTaxEventDate"></p>
+                    </div>
+                    <div>
+                        <img id="invoiceLogo" src="logo.png" alt="Лого" class="h-12" onerror="this.style.display='none'; this.nextSibling.style.display='block';">
+                        <span id="logoFallback" class="text-gray-800 font-semibold" style="display: none;">[Лого]</span>
+                    </div>
                 </div>
-                <div class="client">
-                    <h3>Клиент:</h3>
-                    <p id="invClient">Клиент ЕООД</p>
+
+                <div class="grid grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-800">От:</h2>
+                        <p class="text-gray-600" id="previewSupplierName"></p>
+                        <p class="text-gray-600" id="previewSupplierAddress"></p>
+                        <p class="text-gray-600" id="previewSupplierId"></p>
+                        <p class="text-gray-600" id="previewSupplierMol"></p>
+                        <p class="text-gray-600" id="previewSupplierPhone"></p>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-800">До:</h2>
+                        <p class="text-gray-600" id="previewRecipientName"></p>
+                        <p class="text-gray-600" id="previewRecipientAddress"></p>
+                        <p class="text-gray-600" id="previewRecipientId"></p>
+                        <p class="text-gray-600" id="previewRecipientMol"></p>
+                    </div>
                 </div>
-            </div>
-            <table class="invoice-items">
-                <thead>
-                    <tr>
-                        <th>Описание</th>
-                        <th>Количество</th>
-                        <th>Цена</th>
-                        <th>Сума</th>
-                    </tr>
-                </thead>
-                <tbody id="invItems">
-                    <!-- Тук ще се добавят артикулите -->
-                </tbody>
-            </table>
-            <div class="invoice-total">
-                <strong>Общо: <span id="invTotal">0.00</span> лв.</strong>
+
+                <div class="mb-8">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-4 font-semibold text-gray-800">№</th>
+                                <th class="p-4 font-semibold text-gray-800">Наименование</th>
+                                <th class="p-4 font-semibold text-gray-800">Количество</th>
+                                <th class="p-4 font-semibold text-gray-800">Ед. Цена</th>
+                                <th class="p-4 font-semibold text-gray-800">Общо</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewItems"></tbody>
+                    </table>
+                </div>
+
+                <div class="flex justify-end mb-8">
+                    <div class="w-1/3">
+                        <div class="flex justify-between py-2">
+                            <span class="font-semibold text-gray-800">Междинна сума:</span>
+                            <span class="text-gray-600" id="previewSubtotal"></span>
+                        </div>
+                        <div class="flex justify-between py-2">
+                            <span class="font-semibold text-gray-800">ДДС (20%):</span>
+                            <span class="text-gray-600" id="previewTax"></span>
+                        </div>
+                        <div class="flex justify-between py-2 border-t">
+                            <span class="font-bold text-gray-800">Общо:</span>
+                            <span class="font-bold text-gray-800" id="previewTotal"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-800">Платежни инструкции</h2>
+                    <p class="text-gray-600">Моля, извършете плащането в рамките на 14 дни на следната сметка:</p>
+                    <p class="text-gray-600" id="previewBank"></p>
+                    <p class="text-gray-600" id="previewIban"></p>
+                    <p class="text-gray-600" id="previewBankCode"></p>
+                </div>
+
+                <div class="text-center text-gray-600">
+                    <p>Благодарим за доверието!</p>
+                    <p>Свържете се с нас при въпроси: <span id="previewSupplierPhoneFooter"></span></p>
+                </div>
+
+                <div class="text-center mt-6 no-print">
+                    <button onclick="window.print()" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                        Отпечатай фактура
+                    </button>
+                    <button onclick="generatePDF()" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 ml-4">
+                        Изтегли PDF
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
